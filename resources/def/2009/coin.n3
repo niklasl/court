@@ -3,30 +3,27 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dct: <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix : <http://purl.org/court/def/2009/coin#> .
 
 
 : a owl:Ontology;
-    rdfs:label "The Coin Ontology"@en;
-    rdfs:comment """Coin describes schemes for URI construction."""@en;
+    rdfs:label "The CoIN Ontology"@en;
+    rdfs:comment """CoIN describes schemes for URI construction."""@en;
     dct:created "2009-11-28"^^xsd:date;
-    dct:modified "2010-04-06"^^xsd:date;
+    dct:modified "2010-05-02"^^xsd:date;
+    #dct:issued "TODO"^^xsd:date;
     dct:creator <http://purl.org/NET/dust/foaf#self> .
 
 
 :CoinScheme a owl:Class;
     rdfs:label "Coin Scheme"@en;
-    rdfs:comment """A scheme describing how to construct URI:s for
-            resources based on their component properties."""@en;
+    rdfs:comment """A scheme describing how to construct URI:s for resources
+            based on their component properties."""@en;
     rdfs:isDefinedBy : .
 
-:root a owl:DatatypeProperty;
-    rdfs:label "root"@en;
-    rdfs:domain :CoinScheme;
-    rdfs:isDefinedBy : .
-
-:separator a owl:DatatypeProperty;
-    rdfs:label "separator"@en;
+:base a owl:DatatypeProperty;
+    rdfs:label "base"@en;
     rdfs:domain :CoinScheme;
     rdfs:isDefinedBy : .
 
@@ -35,144 +32,186 @@
     rdfs:domain :CoinScheme;
     rdfs:isDefinedBy : .
 
-
-:component a owl:ObjectProperty;
-    rdfs:label "component"@en;
-    rdfs:range rdf:Property;
-    rdfs:isDefinedBy : .
-
-:fragmentPrefix a owl:DatatypeProperty;
-    rdfs:label "fragment prefix"@en;
-    rdfs:isDefinedBy : .
-
-:segment a owl:DatatypeProperty;
-    rdfs:label "segment"@en;
-    rdfs:isDefinedBy : .
-
-#:prefix a owl:DatatypeProperty;
-#    rdfs:label "prefix"@en;
-#    rdfs:isDefinedBy : .
-
-
-:Containment a owl:Class;
-    rdfs:label "Containment"@en;
-    rdfs:comment """Containment by relation to base resource."""@en;
-    rdfs:isDefinedBy : .
-
-:baseRel a owl:ObjectProperty;
-    rdfs:label "base relation"@en;
-    rdfs:comment """References a property which the contained resource is a
-            subject of. The object of that will be used as the base URI for
-            this containment."""@en;
-    rdfs:domain :Containment;
-    rdfs:range rdf:Property;
-    rdfs:isDefinedBy : .
-
-:baseRev a owl:ObjectProperty;
-    rdfs:label "base reverse relation"@en;
-    rdfs:comment """References a property which the contained resource is an
-            object of. The subject of that will be used as the base URI for
-            this containment."""@en;
-    rdfs:domain :Containment;
-    rdfs:range rdf:Property;
+:template a owl:ObjectProperty;
+    rdfs:label "template"@en;
+    rdfs:domain :CoinScheme;
+    rdfs:range :Template;
     rdfs:isDefinedBy : .
 
 
-:Base a owl:Class;
-    rdfs:label "Base"@en;
+:Template a owl:Class;
+    rdfs:label "Template"@en;
+    rdfs:comment """A template defines rules for constructing URI:s based on a
+            URI template value and its referenced component parts."""@en;
     rdfs:isDefinedBy : .
 
-:scheme a owl:ObjectProperty;
-    rdfs:label "scheme"@en;
-    rdfs:domain :Base;
-    rdfs:range :CoinScheme;
-    rdfs:isDefinedBy : .
-
-:contains a owl:ObjectProperty;
-    rdfs:label "contains"@en;
-    rdfs:domain :Base;
-    #rdfs:range :Base; # Part?
-    rdfs:isDefinedBy : .
-
-:useTokenSet a owl:ObjectProperty;
-    rdfs:label "base"@en;
-    rdfs:domain :Base;
-    rdfs:range :TokenSet;
+:uriTemplate a owl:DatatypeProperty;
+    rdfs:label "URI template"@en;
+    rdfs:comment """An URI template literal, based on the basic variants of URI
+            templates described in the IETF RFC draft "URI Template" by Joe Gregorio et
+            al."""@en;
+    rdfs:domain :Template;
+    rdfs:seeAlso <http://tools.ietf.org/html/draft-gregorio-uritemplate-04>;
     rdfs:isDefinedBy : .
 
 :forType a owl:ObjectProperty;
     rdfs:label "for type"@en;
+    rdfs:comment """Restricts the current template to only match resources with
+            the given type."""@en;
+    rdfs:domain :Template;
     rdfs:range rdfs:Class;
     rdfs:isDefinedBy : .
 
-:TokenSet a owl:Class;
-    rdfs:label "Token set"@en;
-    rdfs:isDefinedBy : .
-
-:Token a owl:Class;
-    rdfs:label "Token"@en;
-    rdfs:isDefinedBy : .
-
-:tokenFrom a owl:ObjectProperty;
-    rdfs:label "token from"@en;
-    rdfs:domain :Token;
-    rdfs:range :Property;
-    rdfs:isDefinedBy : .
-
-:tokenSet a owl:ObjectProperty;
-    rdfs:label "token set"@en;
-    rdfs:domain :Token;
-    rdfs:range :TokenSet;
-    rdfs:isDefinedBy : .
-
-:represents a owl:ObjectProperty;
-    rdfs:label "represents"@en;
-    rdfs:domain :Token;
+:component a owl:ObjectProperty;
+    rdfs:label "component"@en;
+    rdfs:domain :Template;
+    rdfs:range :Component;
     rdfs:isDefinedBy : .
 
 
-:TokenTranslation a owl:Class;
-    rdfs:label "Token translation"@en;
+:Component a owl:Class;
+    rdfs:label "Component"@en;
+    rdfs:comment """A component defines a (commonly named) part of a Template
+            describing how to get a value for a template variable from a resource
+            description."""@en;
+    rdfs:isDefinedBy : .
+
+:variable a owl:DatatypeProperty;
+    rdfs:label "variable"@en;
+    rdfs:comment """The name of a variable in the URI template which the
+            Component corresponds to."""@en;
+    rdfs:domain :Component;
+    rdfs:isDefinedBy : .
+
+:property a owl:ObjectProperty;
+    rdfs:label "property"@en;
+    rdfs:comment """References a required property on the resource whose value
+            will be used to represent the component in the template."""@en;
+    rdfs:domain :Component;
+    rdfs:range rdf:Property;
+    rdfs:isDefinedBy : .
+
+# TODO:? slugProperty? or sep :property and :rel + :slugProperty ...
+:slugFrom a owl:ObjectProperty;
+    rdfs:label "slug from"@en;
+    rdfs:domain :Component;
+    rdfs:range rdf:Property;
+    rdfs:isDefinedBy : .
+
+#:slugDescriptions a owl:ObjectProperty;
+#    rdfs:isDefinedBy : .
+
+
+:RelativeTemplate a owl:Class;
+    rdfs:subClassOf :Template;
+    rdfs:label "Relative Template"@en;
+    rdfs:comment """A relative template resolves the minted URI using a
+            relation to a base resource."""@en;
+    rdfs:isDefinedBy : .
+
+:relToBase a owl:ObjectProperty;
+    rdfs:label "base relation"@en;
+    rdfs:comment """References a property which the contained resource is a
+            subject of. The object of that will be used as the base URI for
+            this containment."""@en;
+    rdfs:domain :RelativeTemplate;
+    rdfs:range rdf:Property;
+    rdfs:isDefinedBy : .
+
+:relFromBase a owl:ObjectProperty;
+    rdfs:label "base reverse relation"@en;
+    rdfs:comment """References a property which the contained resource is an
+            object of. The subject of that will be used as the base URI for
+            this containment."""@en;
+    rdfs:domain :RelativeTemplate;
+    rdfs:range rdf:Property;
+    rdfs:isDefinedBy : .
+
+:fragmentTemplate a owl:DatatypeProperty;
+    rdfs:label "fragment template"@en;
+    rdfs:domain :RelativeTemplate;
+    rdfs:isDefinedBy : .
+
+
+:slug a owl:DatatypeProperty;
+    rdfs:label "slug"@en;
+    rdfs:subPropertyOf skos:notation;
+    rdfs:isDefinedBy : .
+
+:abbrSlug a owl:DatatypeProperty;
+    rdfs:label "abbreviated slug"@en;
+    rdfs:subPropertyOf :slug;
+    rdfs:isDefinedBy : .
+
+
+#:useSlugSet a owl:ObjectProperty;
+#    rdfs:label "use slug set"@en;
+#    rdfs:domain :Component;
+#    rdfs:range :SlugSet;
+#    rdfs:isDefinedBy : .
+#
+#:SlugSet a owl:Class;
+#    rdfs:label "Slug set"@en;
+#    rdfs:isDefinedBy : .
+#
+#:Slug a owl:Class;
+#    rdfs:label "Slug"@en;
+#    rdfs:isDefinedBy : .
+#
+#:represents a owl:ObjectProperty;
+#    rdfs:label "represents"@en;
+#    rdfs:domain :Slug;
+#    rdfs:isDefinedBy : .
+#
+#:slugSet a owl:ObjectProperty;
+#    rdfs:label "slug set"@en;
+#    rdfs:domain :Slug;
+#    rdfs:range :SlugSet;
+#    rdfs:isDefinedBy : .
+
+
+:SlugTranslation a owl:Class;
+    rdfs:label "Slug translation"@en;
     rdfs:isDefinedBy : .
 
 :UrlEncodedTranslation a owl:Class;
     rdfs:label "URL-encoded translation"@en;
-    rdfs:subClassOf :TokenTranslation;
+    rdfs:subClassOf :SlugTranslation;
     rdfs:isDefinedBy : .
 
 :UpperCasedTranslation a owl:Class;
     rdfs:label "Upper-cased translation"@en;
-    rdfs:subClassOf :TokenTranslation;
+    rdfs:subClassOf :SlugTranslation;
     rdfs:isDefinedBy : .
 
 :LowerCasedTranslation a owl:Class;
     rdfs:label "Lower-cased translation"@en;
-    rdfs:subClassOf :TokenTranslation;
+    rdfs:subClassOf :SlugTranslation;
     rdfs:isDefinedBy : .
 
 :BaseCharTranslation a owl:Class;
     rdfs:label "Base char translation"@en;
-    rdfs:subClassOf :TokenTranslation;
+    rdfs:subClassOf :SlugTranslation;
     rdfs:isDefinedBy : .
 
-:tokenTranslation a owl:DatatypeProperty;
-    rdfs:label "token translation"@en;
-    rdfs:range :TokenTranslation;
+:slugTranslation a owl:DatatypeProperty;
+    rdfs:label "slug translation"@en;
+    rdfs:range :SlugTranslation;
     rdfs:isDefinedBy : .
 
 :spaceReplacement a owl:DatatypeProperty;
     rdfs:label "space replacement"@en;
-    rdfs:domain :TokenTranslation;
+    rdfs:domain :SlugTranslation;
     rdfs:isDefinedBy : .
 
 :stripRegexp a owl:DatatypeProperty;
     rdfs:label "strip regexp"@en;
-    rdfs:domain :TokenTranslation;
+    rdfs:domain :SlugTranslation;
     rdfs:isDefinedBy : .
 
 :replacementMap a owl:ObjectProperty;
     rdfs:label "replacement map"@en;
-    rdfs:domain :TokenTranslation;
+    rdfs:domain :SlugTranslation;
     rdfs:isDefinedBy : .
 
 :baseCharMap a owl:ObjectProperty;
@@ -182,6 +221,6 @@
 
 :validRegexp a owl:DatatypeProperty;
     rdfs:label "valid regexp"@en;
-    rdfs:domain :TokenTranslation;
+    rdfs:domain :SlugTranslation;
     rdfs:isDefinedBy : .
 
