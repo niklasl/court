@@ -1,0 +1,94 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix coin: <http://purl.org/court/def/2009/coin#> .
+
+#=======================================================================
+# The coin scheme itself:
+
+@prefix : <http://example.org/def/scheme#> .
+
+
+: a coin:CoinScheme;
+    coin:base "http://example.org/";
+    coin:slugTranslation [
+            a coin:LowerCasedTranslation, coin:BaseCharTranslation;
+            coin:spaceReplacement "_";
+            coin:stripRegexp "[^a-z0-9_().,:-]";
+            coin:validRegexp "^[a-z0-9][a-z0-9_().,:-]*$"
+        ];
+    coin:template [
+            coin:uriTemplate "/publ/{publisher}/{alternative}";
+            coin:component [
+                    coin:variable "publisher";
+                    coin:property dct:publisher;
+                    coin:slugFrom :abbrSlug
+                ], [
+                    coin:variable "alternative";
+                    coin:property dct:alternative
+                ]
+        ], [
+            coin:uriTemplate "/profiles/{name}";
+            coin:forType foaf:PersonalProfileDocument;
+            coin:component [
+                    coin:variable "name";
+                    coin:property foaf:primaryTopic;
+                    coin:slugFrom foaf:name
+                ]
+        ], [
+            coin:uriTemplate "/profiles/{name}#person";
+            coin:forType foaf:Person;
+            coin:component [ coin:property foaf:name ]
+        ], [
+            # "containment", i.e. URI base is set to a related resource URI
+            coin:relToBase dct:isVersionOf;
+            # TODO: Keep this "reserved form" from uritemplate draft on value
+            # taken from regular component instead of relToBase? But this
+            # doesn't properly work with e.g. a resource URI ending in '/'!
+            coin:uriTemplate "{+base}/rev/{issued}";
+            # TODO: either variants of uriTemplate:
+            #coin:baseAppendUriTemplate
+            #coin:appendToFixedBaseUriTemplate
+            #coin:appendUriTemplate
+            #coin:appendToBaseTemplate
+            #coin:baseAsDirectoryUriTemplate
+            # .. Or controlled resolution by:
+            #coin:baseUriModifier coin:ToDirectory; #coin:StripSuffix # replace..
+
+            coin:component [ coin:property dct:issued ]
+        ];
+    # TOOD: coin:useDataset (coin:useGraph)?
+    rdfs:seeAlso <http://example.org/def/scheme/slugs.rdf> .
+
+:abbrSlug a rdf:Property;
+    rdfs:comment "An abbreviated slug for URI:s under <example.org>.";
+    rdfs:subPropertyOf coin:abbrSlug;
+    rdfs:isDefinedBy : .
+
+#=======================================================================
+# Data in <slugs.rdf> (controlled by the coin scheme owners):
+
+<http://company1.com/about#> :abbrSlug "c1" .
+<http://company2.com/about#> :abbrSlug "c2" .
+
+
+#=======================================================================
+# Matching resources like:
+
+<http://example.org/publ/c1/the_report> a bibo:Document;
+    dct:publisher <http://company1.com/about#>;
+    dct:alternative "The Report"@en .
+
+<http://example.org/publ/c1/the_report/rev/2000-01-01> a bibo:Document;
+    dct:isVersionOf <http://example.org/publ/c1/the_report>;
+    dct:issued "2000-01-01"^^xsd:date .
+
+<http://example.org/profiles/some_body> a foaf:PersonalProfileDocument;
+    foaf:primaryTopic <http://example.org/profiles/some_body#me> .
+
+<http://example.org/profiles/some_body#person> a foaf:Person;
+    foaf:name "Some Body" .
+
