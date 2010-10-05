@@ -13,7 +13,8 @@
     dct:created "2009-11-28"^^xsd:date;
     dct:modified "2010-05-02"^^xsd:date;
     #dct:issued "TODO"^^xsd:date;
-    dct:creator <http://purl.org/NET/dust/foaf#self> .
+    dct:creator <http://purl.org/NET/dust/foaf#self>;
+    dct:contributor <http://richard.cyganiak.de/foaf.rdf#cygri> .
 
 
 :CoinScheme a owl:Class;
@@ -134,13 +135,22 @@
 
 
 :slug a owl:DatatypeProperty;
-    rdfs:label "slug"@en;
     rdfs:subPropertyOf skos:notation;
+    rdfs:label "slug"@en;
+    rdf:comment """A "slug" is a string, suitable in a URI, representing the
+        resource. It must be locally unique within a specific URI space (e.g.
+        unique for a specific type, within a certain time scope or similar). It is
+        up to an application to determine what properties of the resource, other
+        than the slug value, must be combined to secure this uniqueness."""@en;
     rdfs:isDefinedBy : .
 
 :abbrSlug a owl:DatatypeProperty;
-    rdfs:label "abbreviated slug"@en;
     rdfs:subPropertyOf :slug;
+    rdfs:label "abbreviated slug"@en;
+    rdf:comment """An "abbrSlug" is a shorthand abbreviation of a resource,
+        unique within a specific URI space. An abbreviated slug is suitable for
+        representing some kind of container segment, e.g. denoting a
+        "directory" within an hierarchical URI scheme."""@en;
     rdfs:isDefinedBy : .
 
 
