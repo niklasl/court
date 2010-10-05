@@ -11,7 +11,7 @@
     rdfs:label "The CoIN Ontology"@en;
     rdfs:comment """CoIN describes schemes for URI construction."""@en;
     dct:created "2009-11-28"^^xsd:date;
-    dct:modified "2010-05-02"^^xsd:date;
+    dct:modified "2010-10-06"^^xsd:date;
     #dct:issued "TODO"^^xsd:date;
     dct:creator <http://purl.org/NET/dust/foaf#self>;
     dct:contributor <http://richard.cyganiak.de/foaf.rdf#cygri> .
