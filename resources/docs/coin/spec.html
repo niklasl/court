@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The CoIN Vocabulary</title>
+    <meta http-equiv='Content-Type' content='text/html;charset=utf-8'/>
+    <script src='http://dev.w3.org/2009/dap/ReSpec.js/js/respec.js' class='remove'></script>
+    <script class='remove'>
+      var respecConfig = {
+          subtitle: "Describing URI Schemes as the Composition of Identifier Names",
+          shortName: "coin",
+          specStatus: "unofficial",
+
+          publishDate: "2011-03-27",
+
+          copyrightStart: "2009",
+
+          //previousPublishDate: "1900-01-01",
+          //previousMaturity: "WD",
+
+          // if there a publicly available Editor's Draft, this is the link
+          edDraftURI: "http://dev.w3.org/2009/dap/ReSpec.js/documentation.html",
+
+          // if this is a LCWD, uncomment and set the end of its review period
+          // lcEnd: "2009-08-05",
+
+          // if you want to have extra CSS, append them to this list
+          // it is recommended that the respec.css stylesheet be kept
+          extraCSS:             ["http://dev.w3.org/2009/dap/ReSpec.js/css/respec.css"],
+
+          // editors, add as many as you like
+          // only "name" is required
+          editors:  [
+              { name: "Niklas Lindström", url: "http://neverspace.net/"
+                /*, company: "Your Company", companyURL: "http://example.com/"*/ },
+          ],
+
+          //wg: "In Charge Of This Document Working Group",
+          //wgURI: "http://example.org/really-cool-wg",
+
+          // name (with the @w3c.org) of the public mailing to which comments are due
+          //wgPublicList: "spec-writers-anonymous",
+
+          // URI of the patent status for this WG, for Rec-track documents
+          wgPatentURI:  ""
+      };
+    </script>
+    <script class='remove'>
+      function updateExample(doc, content) {
+        // perform transformations to make it render and prettier
+        return '<pre class="example">' + doc._esc(content) + '</pre>';
+      }
+    </script>
+  </head>
+  <body>
+    <section id='abstract'>
+      CoIN is a vocabulary and method for describing how URI:s for resources
+      are composed from data about them.
+    </section>
+
+    <section>
+      <h2>Introduction</h2>
+      <p>
+      The CoIN vocabulary defines a set of classes and properties used to
+      descibe what properties of a resource constitute components of a URI.
+      (Who for all other purposes are supposed to be treated as opaque.)
+      </p>
+      <p>
+      Data described using CoIN can thus be used to control how to mint and/or
+      check such URI:s.
+      </p>
+      <section>
+        <h3>Scope</h3>
+        <p>
+        This document is one of the two core documents of CoIN; the other is the
+        <strong><a href="http://purl.org/court/def/2009/coin#">CoIN vocabulary
+            definition</a></strong> <a href="#ref-COIN-VOC">[COIN-VOC]</a>.
+        </p>
+        <p>
+        This document is aimed at both data publishers (those involved in
+        hosting and maintaining data), and data users (those involved in
+        finding, querying, crawling and indexing data).
+        </p>
+        <p>
+        Readers of this document should be familiar with the core concepts of
+        <a href="http://www.w3.org/TR/2004/REC-rdf-primer-20040210/">RDF</a> [[RDF-PRIMER]]
+        and
+        <a href="http://www.w3.org/TR/2004/REC-rdf-schema-20040210/">RDF Schema</a> [[RDF-SCHEMA]].
+        Knowledge of the
+        <a href="http://www.w3.org/TeamSubmission/turtle/">Turtle syntax</a> [[TURTLE]]
+        for RDF is required to read the examples. Some knowledge of widely-used vocabularies
+        (<a href="http://dublincore.org/documents/2010/10/11/dcmi-terms/">Dublin Core Terms</a> [<a href="#ref-DC-TERMS">DC-TERMS</a>],
+        <a href="http://xmlns.com/foaf/spec/20100809.html">Friend of a Friend</a> [[FOAF]])
+        is also assumed.
+        </p>
+      </section>
+      <section>
+        <h3>Document conventions</h3>
+        <p>
+        All examples in this document are written in the
+        <a href="http://www.w3.org/TeamSubmission/turtle/">Turtle RDF syntax</a>
+        [[TURTLE]]. Throughout the document, the following namespaces are used:
+        </p>
+        <div data-include="prefixes.ttl" data-oninclude="updateExample"></div>
+      </section>
+    </section>
+
+    <section>
+      <h2>Concept</h2>
+      <p>
+      With CoIN you describe schemes for URI construction. These schemes use
+      <a href="http://tools.ietf.org/html/draft-gregorio-uritemplate-04">URI
+      templates</a> <a href="#ref-URITEMPLATES">[URITEMPLATES]</a>
+      to describe the composition structure. URI Templates contain variables,
+      which are mapped to values by declaring a link between a variable and a
+      property of the resource.
+      </p>
+      <section>
+        <h3>Definitions</h3>
+        <dl>
+        <dt>Scheme</dt>
+          <dd>
+            <p>
+            A scheme defines one specific approach for coining a URI. Commonly
+            one scheme is defined for a specific domain (or subdomain/-segment
+            thereof). While there can be many such approaches, and thus several
+            URI schemes describing the same "resource space", it is recommended
+            to define one canonical space. Make it as durable as possible (in
+            terms of identity and time), and stick with it.
+            </p>
+          </dd>
+          <dt>Slug</dt>
+          <dd>
+          A slug is one or more URI segments used to represent an opaque
+          reference for a resource within a domain space.
+          </dd>
+          <dt>Space</dt>
+          <dd>
+          A domain space is a hypothetical, logically constrained value space
+          local to some specific domain context. A variable in a URI template
+          represents such a space.
+          </dd>
+        </dl>
+      </section>
+    </section>
+
+    <section>
+      <h2>Use Cases</h2>
+      <p>
+      ...
+      </p>
+      <section>
+        <h3>Records Of Things</h3>
+        <p>
+        ...
+        </p>
+      </section>
+      <section>
+        <h3>Publishing Documents</h3>
+        <p>
+        ...
+        </p>
+      </section>
+      <section>
+        <h3>Document Revisions</h3>
+        <p>
+        ...
+        </p>
+      </section>
+    </section>
+
+    <section>
+      <h2>Requirements</h2>
+      <p>
+      ...
+      </p>
+      <section>
+        <h3>Local Uniqueness</h3>
+        <p>
+        ...
+        </p>
+      </section>
+      <section>
+        <h3>Character Translations</h3>
+        <p>
+        ...
+        </p>
+      </section>
+      <section>
+        <h3>Description Variations</h3>
+        <p>
+        ...
+        </p>
+      </section>
+      <section>
+        <h3>Dependent Base URI:s</h3>
+        <p>
+        ...
+        </p>
+      </section>
+      <section>
+        <h3>Fragment Identifiers</h3>
+        <p>
+        ...
+        </p>
+      </section>
+    </section>
+
+    <section>
+      <h2>The CoIN Vocabulary</h2>
+      <p>
+      ...
+      </p>
+      <pre>
+      http://purl.org/court/def/2009/coin#
+      </pre>
+      <section>
+        <h3>Describing Character Translations</h3>
+        <p>
+        ...
+        </p>
+      </section>
+      <section>
+        <h3>Advanced Features</h3>
+        <p>
+        ...
+        </p>
+      </section>
+    </section>
+
+    <section>
+      <h2>Method</h2>
+      <p>
+      URI:s are coined for a resource by reading the scheme and trying to match
+      a full path (greediest match "wins"). This includes matching by type, or
+      computing tokens for property values, either directly, from the property
+      value of a reference, or by finding a "slug token" for the referenced
+      resource (in a given dataset).
+      </p>
+      <section>
+        <h3>Algorithm</h3>
+        <p>
+        <i>This is an outline of how an algorithm for minting URI:s using CoIN should work.</i>
+        </p>
+        <p>
+        A URI can minted for a resource by using a <tt>coin:CoinScheme</tt>. A scheme
+        defines a set of Templates (via <tt>coin:template</tt>). They are defined as
+        the combination of a <tt>coin:uriTemplate</tt> (based on the syntax of the URI
+        template draft), and <tt>coin:component</tt> definitions.
+        </p>
+        <p>
+        Each component of a template defines a property (<tt>coin:property</tt>) for
+        which a value will be used to fill in a variable in the URI template. The
+        variable name is either given explicitly (using <tt>coin:variable</tt>), or by
+        using the leaf part of the URI of the property <i>(N.B.: this "leaf"
+        usage should be considered experimental)</i>.
+        </p>
+        <p>
+        If there is a value for <strong>all</strong> of the components, the template
+        "matches" and a URI can be constructed by using the URI template and
+        the values for the variables.
+        </p>
+        <p>
+        A scheme can also define a base (<tt>coin:base</tt>) to be used for
+        constructing the URI (thus the URI templates need not be full URI:s, only
+        absolute).
+        </p>
+        <p>
+        Furthermore, templates can narrow the match by defining which type the resource
+        must have for the template to match (using <tt>coin:forType</tt>).
+        </p>
+        <p>
+        The value is expected to be a literal (of any type), unless the component
+        defines a second property (using <tt>coin:slugFrom</tt>). If present, the value
+        to use is the value for a related resource (related via the object of the
+        component's <tt>coin:property</tt>). In SPARQL:
+        </p>
+        <pre class="example">
+        ?component
+            coin:property ?property;
+            coin:slugFrom ?slugFrom .
+        ?resource ?property ?related .
+        ?related ?slugFrom ?value .
+        </pre>
+        <p>
+        There is also a way to define how to mint fragment URI:s by appending resolved
+        fragment templates to a base URI picked from a relation from or to the
+        resource. <i>has yet to be documented.</i>
+        </p>
+        <p>
+        Finally, CoIN defines properties for describing how values must be translated
+        before the URI is constructed (using <tt>coin:slugTranslation</tt> with e.g.
+        type(s) <tt>coin:LowerCasedTranslation</tt>, <tt>coin:BaseCharTranslation</tt>,
+        optionally defining a specific <tt>coin:spaceReplacement</tt> and/or
+        matching/stripping using regexps). Once completed, remaining characters illegal
+        in URI segments must be URI encoded (unless a complete base is presevered by
+        prepending them with &quot;+&quot;, according to the URI Templates draft).
+        </p>
+      </section>
+    </section>
+
+    <section>
+      <h2>Use Case Examples</h2>
+      <p>
+      ...
+      </p>
+    </section>
+
+    <section class='appendix'>
+      <h2>Acknowledgements</h2>
+      <p>
+        Many thanks to Richard Cyganiak, Staffan Malmgren, ...
+      </p>
+    </section>
+
+    <section class='appendix'>
+      <h2>An Implementation In SPARQL</h2>
+    </section>
+
+  </body>
+</html>
