@@ -1,0 +1,17 @@
+@prefix sioc: <http://rdfs.org/sioc/ns#> .
+@prefix sioct: <http://rdfs.org/sioc/types#> .
+
+<http://example.org/alice> a sioc:UserAccount;
+  sioc:id "alice" .
+
+<http://example.org/blogs/alice> a sioct:Weblog;
+  sioc:has_owner <http://example.org/alice> .
+
+<http://example.org/blogs/alice/post/12> a sioct:BlogPost;
+  sioc:id 12;
+  sioc:has_container <http://example.org/blogs/alice> .
+
+<http://example.org/blogs/alice/post/12/comment/3> a sioct:Comment;
+  sioc:id 3;
+  sioc:reply_of <http://example.org/blogs/alice/post/12> .
+

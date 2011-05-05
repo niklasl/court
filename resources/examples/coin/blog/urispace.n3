@@ -1,0 +1,32 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix coin: <http://purl.org/court/def/2009/coin#> .
+@prefix sioc: <http://rdfs.org/sioc/ns#> .
+@prefix sioct: <http://rdfs.org/sioc/types#> .
+@prefix : <http://example.org/def/coin#> .
+
+: a coin:URISpace;
+  coin:base "http://example.org/";
+
+  coin:template [
+      coin:forType sioct:Weblog;
+      coin:uriTemplate "/blogs/{user_id}";
+      coin:binding [
+              coin:variable "user_id";
+              coin:property sioc:has_owner;
+              coin:slugFrom sioc:id
+          ]
+
+    ], [
+      coin:forType sioct:BlogPost;
+      coin:uriTemplate "{+base}/post/{id}";
+      coin:relToBase sioc:has_container;
+      coin:binding [ coin:variable "id"; coin:property sioc:id ]
+    ], [
+      coin:forType sioct:Comment;
+      coin:uriTemplate "{+base}/comment/{id}";
+      coin:relToBase sioc:reply_of;
+      coin:binding [ coin:variable "id"; coin:property sioc:id ]
+
+    ] .
+
