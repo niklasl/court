@@ -9,46 +9,46 @@
 
 : a owl:Ontology;
     rdfs:label "The CoIN Ontology"@en;
-    rdfs:comment """CoIN describes schemes for URI construction."""@en;
+    rdfs:comment """CoIN describes URI spaces and construction templates."""@en;
     dct:created "2009-11-28"^^xsd:date;
-    dct:modified "2010-10-06"^^xsd:date;
+    dct:modified "2011-05-01"^^xsd:date;
     #dct:issued "TODO"^^xsd:date;
     dct:creator <http://purl.org/NET/dust/foaf#self>;
     dct:contributor <http://richard.cyganiak.de/foaf.rdf#cygri> .
 
 
-:CoinScheme a owl:Class;
-    rdfs:label "Coin Scheme"@en;
-    rdfs:comment """A scheme describing how to construct URI:s for resources
-            based on their component properties."""@en;
+:URISpace a owl:Class;
+    rdfs:label "URI Space"@en;
+    rdfs:comment """A URI space. It is described by its lexical value space and
+            templates for URI construction."""@en;
     rdfs:isDefinedBy : .
 
-:base a owl:DatatypeProperty;
+:base a owl:DatatypeProperty; # TODO: owl:InverseFunctionalProperty?
     rdfs:label "base"@en;
-    rdfs:domain :CoinScheme;
+    rdfs:domain :URISpace;
     rdfs:isDefinedBy : .
 
 :fragmentSeparator a owl:DatatypeProperty;
     rdfs:label "fragment separator"@en;
-    rdfs:domain :CoinScheme;
+    rdfs:domain :URISpace;
     rdfs:isDefinedBy : .
 
 :template a owl:ObjectProperty;
     rdfs:label "template"@en;
-    rdfs:domain :CoinScheme;
+    rdfs:domain :URISpace;
     rdfs:range :Template;
     rdfs:isDefinedBy : .
 
 
 :Template a owl:Class;
     rdfs:label "Template"@en;
-    rdfs:comment """A template defines rules for constructing URI:s based on a
-            URI template value and its referenced component parts."""@en;
+    rdfs:comment """A template defines rules for constructing URIs. It defines a
+            URI template structure and its variables."""@en;
     rdfs:isDefinedBy : .
 
 :uriTemplate a owl:DatatypeProperty;
     rdfs:label "URI template"@en;
-    rdfs:comment """An URI template literal, based on the basic variants of URI
+    rdfs:comment """A URI template literal, based on the basic variants of URI
             templates described in the IETF RFC draft "URI Template" by Joe Gregorio et
             al."""@en;
     rdfs:domain :Template;
@@ -63,39 +63,38 @@
     rdfs:range rdfs:Class;
     rdfs:isDefinedBy : .
 
-:component a owl:ObjectProperty;
-    rdfs:label "component"@en;
+:binding a owl:ObjectProperty;
+    rdfs:label "binding"@en;
     rdfs:domain :Template;
-    rdfs:range :Component;
+    rdfs:range :Binding;
     rdfs:isDefinedBy : .
 
 
-:Component a owl:Class;
-    rdfs:label "Component"@en;
-    rdfs:comment """A component defines a (commonly named) part of a Template
-            describing how to get a value for a template variable from a resource
-            description."""@en;
+:Binding a owl:Class;
+    rdfs:label "Binding"@en;
+    rdfs:comment """A binding in a Template defines how to get a value for a
+    template variable from data about a resource."""@en;
     rdfs:isDefinedBy : .
 
 :variable a owl:DatatypeProperty;
     rdfs:label "variable"@en;
-    rdfs:comment """The name of a variable in the URI template which the
-            Component corresponds to."""@en;
-    rdfs:domain :Component;
+    rdfs:comment """The variable name of a Binding. It corresponds to a named
+            variable in the URI template of that Binding."""@en;
+    rdfs:domain :Binding;
     rdfs:isDefinedBy : .
 
 :property a owl:ObjectProperty;
     rdfs:label "property"@en;
     rdfs:comment """References a required property on the resource whose value
-            will be used to represent the component in the template."""@en;
-    rdfs:domain :Component;
+            will be used to represent the variable in the template."""@en;
+    rdfs:domain :Binding;
     rdfs:range rdf:Property;
     rdfs:isDefinedBy : .
 
 # TODO:? slugProperty? or sep :property and :rel + :slugProperty ...
 :slugFrom a owl:ObjectProperty;
     rdfs:label "slug from"@en;
-    rdfs:domain :Component;
+    rdfs:domain :Binding;
     rdfs:range rdf:Property;
     rdfs:isDefinedBy : .
 
@@ -150,13 +149,13 @@
     rdf:comment """An "abbrSlug" is a shorthand abbreviation of a resource,
         unique within a specific URI space. An abbreviated slug is suitable for
         representing some kind of container segment, e.g. denoting a
-        "directory" within an hierarchical URI scheme."""@en;
+        "directory" within an hierarchical URI space."""@en;
     rdfs:isDefinedBy : .
 
 
 #:useSlugSet a owl:ObjectProperty;
 #    rdfs:label "use slug set"@en;
-#    rdfs:domain :Component;
+#    rdfs:domain :Binding;
 #    rdfs:range :SlugSet;
 #    rdfs:isDefinedBy : .
 #
@@ -180,57 +179,62 @@
 #    rdfs:isDefinedBy : .
 
 
-:SlugTranslation a owl:Class;
-    rdfs:label "Slug translation"@en;
+:SlugTransform a owl:Class;
+    rdfs:label "Slug transform"@en;
     rdfs:isDefinedBy : .
 
-:UrlEncodedTranslation a owl:Class;
-    rdfs:label "URL-encoded translation"@en;
-    rdfs:subClassOf :SlugTranslation;
+:UrlEncode a owl:Class; # always used (last!), unless "{+var}"
+    rdfs:label "URL-encode transform"@en;
+    rdfs:subClassOf :SlugTransform;
     rdfs:isDefinedBy : .
 
-:UpperCasedTranslation a owl:Class;
-    rdfs:label "Upper-cased translation"@en;
-    rdfs:subClassOf :SlugTranslation;
+:ToUpperCase a owl:Class;
+    rdfs:label "To upper case transform"@en;
+    rdfs:subClassOf :SlugTransform;
     rdfs:isDefinedBy : .
 
-:LowerCasedTranslation a owl:Class;
-    rdfs:label "Lower-cased translation"@en;
-    rdfs:subClassOf :SlugTranslation;
+:ToLowerCase a owl:Class;
+    rdfs:label "To lower case transform"@en;
+    rdfs:subClassOf :SlugTransform;
     rdfs:isDefinedBy : .
 
-:BaseCharTranslation a owl:Class;
-    rdfs:label "Base char translation"@en;
-    rdfs:subClassOf :SlugTranslation;
+:ToBaseChar a owl:Class;
+    rdfs:label "Base char transform"@en;
+    rdfs:subClassOf :SlugTransform;
     rdfs:isDefinedBy : .
 
-:slugTranslation a owl:DatatypeProperty;
-    rdfs:label "slug translation"@en;
-    rdfs:range :SlugTranslation;
+:slugTransform a owl:DatatypeProperty;
+    rdfs:label "slug transform"@en;
+    rdfs:range :SlugTransform;
+    rdfs:isDefinedBy : .
+
+:apply a owl:ObjectProperty;
+    rdfs:label "apply transform"@en;
+    rdfs:comment "Apply a Slug transform"@en;
+    rdfs:domain :SlugTransform;
+    rdfs:range :SlugTransform;
     rdfs:isDefinedBy : .
 
 :spaceReplacement a owl:DatatypeProperty;
-    rdfs:label "space replacement"@en;
-    rdfs:domain :SlugTranslation;
+    rdfs:label "space token"@en;
+    rdfs:comment """A replacement character for space within a slug."""@en;
+    rdfs:domain :SlugTransform;
     rdfs:isDefinedBy : .
 
-:stripRegexp a owl:DatatypeProperty;
-    rdfs:label "strip regexp"@en;
-    rdfs:domain :SlugTranslation;
+:stripPattern a owl:DatatypeProperty;
+    rdfs:label "strip pattern"@en;
+    rdfs:comment """A regular expression used to remove characters."""@en;
+    rdfs:domain :SlugTransform;
     rdfs:isDefinedBy : .
 
-:replacementMap a owl:ObjectProperty;
-    rdfs:label "replacement map"@en;
-    rdfs:domain :SlugTranslation;
-    rdfs:isDefinedBy : .
-
-:baseCharMap a owl:ObjectProperty;
-    rdfs:label "base char map"@en;
-    rdfs:domain :BaseCharTranslation;
+:replace a owl:ObjectProperty;
+    rdfs:label "replace"@en;
+    rdfs:comment """A whitespace-separated string representing a pair of a string token and its replacement."""@en;
+    rdfs:domain :SlugTransform;
     rdfs:isDefinedBy : .
 
 :validRegexp a owl:DatatypeProperty;
     rdfs:label "valid regexp"@en;
-    rdfs:domain :SlugTranslation;
+    rdfs:domain :SlugTransform;
     rdfs:isDefinedBy : .
 

@@ -6,16 +6,16 @@
     <script src='http://dev.w3.org/2009/dap/ReSpec.js/js/respec.js' class='remove'></script>
     <script class='remove'>
       var respecConfig = {
-          subtitle: "Describing URI Schemes as the Composition of Identifier Names",
+          subtitle: "Describing URI Spaces using Composition of Identifier Names",
           shortName: "coin",
           specStatus: "unofficial",
 
-          publishDate: "2011-03-27",
+          publishDate: "2011-05-06",
 
           copyrightStart: "2009",
 
-          //previousPublishDate: "1900-01-01",
-          //previousMaturity: "WD",
+          previousPublishDate: "2011-04-19",
+          previousMaturity: "WD",
 
           // if there a publicly available Editor's Draft, this is the link
           edDraftURI: "http://dev.w3.org/2009/dap/ReSpec.js/documentation.html",
@@ -53,25 +53,25 @@
   </head>
   <body>
     <section id='abstract'>
-      CoIN is a vocabulary and method for describing how URI:s for resources
-      are composed from data about them.
+      Composition of Identifier Names (CoIN) is a vocabulary and method for
+      describing how URIs for resources are composed from data about them.
     </section>
 
     <section>
       <h2>Introduction</h2>
       <p>
       The CoIN vocabulary defines a set of classes and properties used to
-      descibe what properties of a resource constitute components of a URI.
+      describe what properties of a resource constitute components of a URI.
       (Who for all other purposes are supposed to be treated as opaque.)
       </p>
       <p>
       Data described using CoIN can thus be used to control how to mint and/or
-      check such URI:s.
+      check such URIs.
       </p>
       <section>
         <h3>Scope</h3>
         <p>
-        This document is one of the two core documents of CoIN; the other is the
+        This document is one of the two core documents of CoIN. The other is the
         <strong><a href="http://purl.org/court/def/2009/coin#">CoIN vocabulary
             definition</a></strong> <a href="#ref-COIN-VOC">[COIN-VOC]</a>.
         </p>
@@ -93,6 +93,7 @@
         is also assumed.
         </p>
       </section>
+      <!--  TODO: revisions and change notes? -->
       <section>
         <h3>Document conventions</h3>
         <p>
@@ -102,66 +103,89 @@
         </p>
         <div data-include="prefixes.ttl" data-oninclude="updateExample"></div>
       </section>
-    </section>
-
-    <section>
-      <h2>Concept</h2>
-      <p>
-      With CoIN you describe schemes for URI construction. These schemes use
-      <a href="http://tools.ietf.org/html/draft-gregorio-uritemplate-04">URI
-      templates</a> <a href="#ref-URITEMPLATES">[URITEMPLATES]</a>
-      to describe the composition structure. URI Templates contain variables,
-      which are mapped to values by declaring a link between a variable and a
-      property of the resource.
-      </p>
       <section>
         <h3>Definitions</h3>
         <dl>
-        <dt>Scheme</dt>
+        <dt>URI Space</dt>
           <dd>
             <p>
-            A scheme defines one specific approach for coining a URI. Commonly
-            one scheme is defined for a specific domain (or subdomain/-segment
-            thereof). While there can be many such approaches, and thus several
-            URI schemes describing the same "resource space", it is recommended
-            to define one canonical space. Make it as durable as possible (in
-            terms of identity and time), and stick with it.
+            A URI space defines one specific approach for coining a URI.
+            Commonly one space is defined for a specific domain (or
+            subdomain/-segment thereof). While there can be many such
+            approaches, and thus several URI spaces describing the same
+            "resource space", it is recommended to define one canonical space.
+            Make it as durable as possible (in terms of identity and time), and
+            stick with it.
             </p>
+          </dd>
+          <dt>Template</dt>
+          <dd>
+          ...
+          </dd>
+          <dt>Variable</dt>
+          <dd>
+          A variable within a URI template defines a hypothetical, logically
+          constrained value space local to some specific domain context. Care
+          must be taken to ensure unique values within a variable value space,
+          since collisions will break the uniqueness requirement.
           </dd>
           <dt>Slug</dt>
           <dd>
           A slug is one or more URI segments used to represent an opaque
-          reference for a resource within a domain space.
-          </dd>
-          <dt>Space</dt>
-          <dd>
-          A domain space is a hypothetical, logically constrained value space
-          local to some specific domain context. A variable in a URI template
-          represents such a space.
+          reference for a resource, unique within a specific value space.
           </dd>
         </dl>
       </section>
     </section>
 
     <section>
-      <h2>Use Cases</h2>
+      <h2>Concept</h2>
+      <p>
+      With CoIN you describe spaces of templates for URI construction. These
+      spaces use <a
+        href="http://tools.ietf.org/html/draft-gregorio-uritemplate-04">URI
+        templates</a> <a href="#ref-URITEMPLATES">[URITEMPLATES]</a> to
+      describe the composition structure. URI Templates contain variables,
+      which are mapped to values by declaring a link between a variable and a
+      property of the resource.
+      </p>
+      <section>
+        <h3>Principles of URI Design</h3>
+        <p>URI design principles have evolved...</p>
+        <p>... contextually unique and durable over time.</p>
+        <p>... akin to "composite keys" in relational databases, but with support for slugs from related descriptions.</p>
+      </section>
+    </section>
+
+
+    <section>
+      <h2>Usage</h2>
       <p>
       ...
       </p>
+      <pre>
+      http://purl.org/court/def/2009/coin#
+      </pre>
       <section>
-        <h3>Records Of Things</h3>
+        <h3>Describing a CoIN Space</h3>
         <p>
         ...
         </p>
       </section>
       <section>
-        <h3>Publishing Documents</h3>
+        <h3>Templates</h3>
         <p>
         ...
         </p>
       </section>
       <section>
-        <h3>Document Revisions</h3>
+        <h3>Component Properties</h3>
+        <p>
+        ...
+        </p>
+      </section>
+      <section>
+        <h3>Describing Character Translations</h3>
         <p>
         ...
         </p>
@@ -169,7 +193,7 @@
     </section>
 
     <section>
-      <h2>Requirements</h2>
+      <h2>Features</h2>
       <p>
       ...
       </p>
@@ -186,13 +210,13 @@
         </p>
       </section>
       <section>
-        <h3>Description Variations</h3>
+        <h3>Indirect Properties</h3>
         <p>
         ...
         </p>
       </section>
       <section>
-        <h3>Dependent Base URI:s</h3>
+        <h3>Description Variations</h3>
         <p>
         ...
         </p>
@@ -203,24 +227,46 @@
         ...
         </p>
       </section>
+      <section>
+        <h3>Dependent Base URIs</h3>
+        <p>
+        ...
+        </p>
+      </section>
     </section>
 
     <section>
-      <h2>The CoIN Vocabulary</h2>
+      <h2>Use Cases</h2>
       <p>
       ...
       </p>
-      <pre>
-      http://purl.org/court/def/2009/coin#
-      </pre>
+      <div data-include="../../examples/coin/example_1.n3" data-oninclude="updateExample"></div>
       <section>
-        <h3>Describing Character Translations</h3>
+        <h3>Regular Documents</h3>
         <p>
         ...
         </p>
       </section>
       <section>
-        <h3>Advanced Features</h3>
+        <h3>Records Of Things</h3>
+        <p>
+        ...
+        </p>
+      </section>
+      <section>
+        <h3>Publications</h3>
+        <p>
+        ...
+        </p>
+      </section>
+      <section>
+        <h3>Revisions</h3>
+        <p>
+        ...
+        </p>
+      </section>
+      <section>
+        <h3>Document Parts</h3>
         <p>
         ...
         </p>
@@ -230,7 +276,7 @@
     <section>
       <h2>Method</h2>
       <p>
-      URI:s are coined for a resource by reading the scheme and trying to match
+      URIs are coined for a resource by reading the space and trying to match
       a full path (greediest match "wins"). This includes matching by type, or
       computing tokens for property values, either directly, from the property
       value of a reference, or by finding a "slug token" for the referenced
@@ -239,20 +285,21 @@
       <section>
         <h3>Algorithm</h3>
         <p>
-        <i>This is an outline of how an algorithm for minting URI:s using CoIN should work.</i>
+        <i>This is an outline of how an algorithm for minting URIs using CoIN should work.</i>
         </p>
         <p>
-        A URI can minted for a resource by using a <tt>coin:CoinScheme</tt>. A scheme
+        A URI can minted for a resource by using a <tt>coin:URISpace</tt>. A space
         defines a set of Templates (via <tt>coin:template</tt>). They are defined as
         the combination of a <tt>coin:uriTemplate</tt> (based on the syntax of the URI
-        template draft), and <tt>coin:component</tt> definitions.
+        template draft), and variable <tt>coin:binding</tt> definitions.
         </p>
         <p>
-        Each component of a template defines a property (<tt>coin:property</tt>) for
+        Each variable of a template defines a property (<tt>coin:property</tt>) for
         which a value will be used to fill in a variable in the URI template. The
-        variable name is either given explicitly (using <tt>coin:variable</tt>), or by
-        using the leaf part of the URI of the property <i>(N.B.: this "leaf"
-        usage should be considered experimental)</i>.
+        variable name is either given explicitly (using
+        <tt>coin:variable</tt>), or by using the leaf part of the URI of the
+        property <i>(N.B.: this "leaf" usage should be considered
+        experimental)</i>.
         </p>
         <p>
         If there is a value for <strong>all</strong> of the components, the template
@@ -260,8 +307,8 @@
         the values for the variables.
         </p>
         <p>
-        A scheme can also define a base (<tt>coin:base</tt>) to be used for
-        constructing the URI (thus the URI templates need not be full URI:s, only
+        A space can also define a base (<tt>coin:base</tt>) to be used for
+        constructing the URI (thus the URI templates need not be full URIs, only
         absolute).
         </p>
         <p>
@@ -269,20 +316,20 @@
         must have for the template to match (using <tt>coin:forType</tt>).
         </p>
         <p>
-        The value is expected to be a literal (of any type), unless the component
+        The value is expected to be a literal (of any type), unless the variable
         defines a second property (using <tt>coin:slugFrom</tt>). If present, the value
         to use is the value for a related resource (related via the object of the
-        component's <tt>coin:property</tt>). In SPARQL:
+        variable's <tt>coin:property</tt>). In SPARQL:
         </p>
         <pre class="example">
-        ?component
+        ?binding
             coin:property ?property;
             coin:slugFrom ?slugFrom .
         ?resource ?property ?related .
         ?related ?slugFrom ?value .
         </pre>
         <p>
-        There is also a way to define how to mint fragment URI:s by appending resolved
+        There is also a way to define how to mint fragment URIs by appending resolved
         fragment templates to a base URI picked from a relation from or to the
         resource. <i>has yet to be documented.</i>
         </p>
@@ -298,13 +345,6 @@
       </section>
     </section>
 
-    <section>
-      <h2>Use Case Examples</h2>
-      <p>
-      ...
-      </p>
-    </section>
-
     <section class='appendix'>
       <h2>Acknowledgements</h2>
       <p>
@@ -313,7 +353,15 @@
     </section>
 
     <section class='appendix'>
-      <h2>An Implementation In SPARQL</h2>
+      <h2>The CoIN Vocabulary</h2>
+      <p>
+      ...
+      </p>
+      <div data-include="../../def/2009/coin.n3" data-oninclude="updateExample"></div>
+    </section>
+
+    <section class='appendix'>
+      <h2>An Implementation In Javascript</h2>
     </section>
 
   </body>
