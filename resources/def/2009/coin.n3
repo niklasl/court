@@ -11,7 +11,7 @@
     rdfs:label "The CoIN Ontology"@en;
     rdfs:comment """CoIN describes URI spaces and construction templates."""@en;
     dct:created "2009-11-28"^^xsd:date;
-    dct:modified "2011-05-01"^^xsd:date;
+    dct:modified "2011-05-06"^^xsd:date;
     #dct:issued "TODO"^^xsd:date;
     dct:creator <http://purl.org/NET/dust/foaf#self>;
     dct:contributor <http://richard.cyganiak.de/foaf.rdf#cygri> .
