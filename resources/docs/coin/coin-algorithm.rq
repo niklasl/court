@@ -1,0 +1,88 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX fn: <http://www.w3.org/2005/xpath-functions#>
+PREFIX coin: <http://purl.org/court/def/2009/coin#>
+
+
+CONSTRUCT {
+
+    ?space coin:slugTransform ?slugTransform .
+    ?slugTransform ?transfProp ?transfValue .
+
+    ?result a coin:TemplateResult;
+        coin:uriSpace ?space;
+        coin:targetResource ?resource;
+        coin:useBase ?useBase;
+        coin:uriTemplate ?uriTemplate;
+        coin:forType ?forType;
+        coin:relToBase ?relToBase;
+        coin:relFromBase ?relFromBase;
+        coin:binding [
+                coin:variable ?variable;
+                coin:property ?property;
+                coin:slugResource ?rel;
+                coin:slugFrom ?slugFrom;
+                coin:value ?value;
+                coin:complete ?complete
+            ] .
+
+} WHERE {
+
+    ?space a coin:URISpace .
+
+    {
+        ?space coin:slugTransform ?slugTransform .
+        ?slugTransform ?transfProp ?transfValue .
+
+    } UNION {
+
+        ?space coin:template ?template .
+        ?template
+            coin:uriTemplate ?uriTemplate;
+            coin:binding ?binding .
+        OPTIONAL {
+            ?template coin:forType ?forType .
+            ?resource a ?forType .
+        }
+        OPTIONAL {
+            ?template coin:relToBase ?relToBase .
+            ?resource ?relToBase ?relBase .
+            BIND(str(?relBase) as ?useBase)
+        }
+        OPTIONAL {
+            ?template coin:relFromBase ?relFromBase .
+            ?revBase ?relFromBase ?resource .
+            BIND(str(?revBase) as ?useBase)
+        }
+        OPTIONAL {
+            ?space coin:base ?useBase .
+        }
+
+        ?binding
+            coin:variable ?variable;
+            coin:property ?property .
+
+        # If UNION is used instead, it filters out bindings without values, but
+        # there will still be incomplete Template matches (where uriTemplate
+        # can't be completed). So this makes it clearer that bindings without
+        # values exist.
+        OPTIONAL {
+            ?resource ?property ?value .
+            NOT EXISTS { ?binding coin:slugFrom ?slugFrom }
+        }
+        OPTIONAL {
+            ?binding coin:slugFrom ?slugFrom .
+            ?resource ?property ?rel .
+            ?rel ?slugFrom ?value .
+        }
+
+        BIND(BOUND(?binding) && BOUND(?value) as ?complete)
+
+        # NOTE: this binds template to resource and thus disconnects bindings
+        # without values
+        #BIND(IRI("urn:md5:" + MD5(?uriTemplate + str(?resource)) + ":coin:result")
+        #        as ?result)
+        BIND(IRI("urn:md5:" + MD5(?uriTemplate) + ":coin:result") as ?result)
+
+    }
+
+}
