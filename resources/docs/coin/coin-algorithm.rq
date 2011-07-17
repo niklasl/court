@@ -36,9 +36,11 @@ CONSTRUCT {
     } UNION {
 
         ?space coin:template ?template .
+
         ?template
             coin:uriTemplate ?uriTemplate;
             coin:binding ?binding .
+
         OPTIONAL {
             ?template coin:forType ?forType .
             ?resource a ?forType .
@@ -74,14 +76,12 @@ CONSTRUCT {
             ?resource ?property ?rel .
             ?rel ?slugFrom ?value .
         }
-
         BIND(BOUND(?binding) && BOUND(?value) as ?complete)
 
-        # NOTE: this binds template to resource and thus disconnects bindings
-        # without values
-        #BIND(IRI("urn:md5:" + MD5(?uriTemplate + str(?resource)) + ":coin:result")
-        #        as ?result)
-        BIND(IRI("urn:md5:" + MD5(?uriTemplate) + ":coin:result") as ?result)
+        # NOTE: cannot use ?resource in ?result identifier, since that will
+        # disconnect any binding without value from the result.
+        BIND(?template as ?result)
+        #BIND(IRI("urn:x-coin:md5:" + MD5(str(?space) + "/" + ?uriTemplate)) as ?result)
 
     }
 
