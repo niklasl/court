@@ -69,6 +69,17 @@
     rdfs:range :Binding;
     rdfs:isDefinedBy : .
 
+:priority a owl:DatatypeProperty;
+    rdfs:label "priority"@en;
+    rdfs:comment """Sets an explicit priority for the template. If no priority
+            is declared, the template should be treated as if it has an
+            implicit priority of 0. for templates with the same priority, the
+            number of matched bindings determines relative order of
+            application."""@en;
+    rdfs:domain :Template;
+    rdfs:range xsd:integer;
+    rdfs:isDefinedBy : .
+
 
 :Binding a owl:Class;
     rdfs:label "Binding"@en;
